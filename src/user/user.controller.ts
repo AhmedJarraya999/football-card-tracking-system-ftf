@@ -5,9 +5,11 @@ import {
   Get,
   Param,
   NotFoundException,
+  Put,
+  Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
 
 @Controller('users')
@@ -30,5 +32,39 @@ export class UserController {
     return user;
   }
 
-  // Other routes like login, update, etc.
+  // Get user by ID (GET /users/id/:id)
+  @Get('id/:id')
+  async getUserById(@Param('id') id: number): Promise<User> {
+    const user = await this.userService.findById(id);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
+  }
+
+  // Get all users (GET /users)
+  @Get()
+  async getAllUsers(): Promise<User[]> {
+    return this.userService.findAll();
+  }
+  // Update user by ID (PUT /users/:id)
+  @Put(':id')
+  async updateUser(
+    @Param('id') id: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<User> {
+    const updatedUser = await this.userService.updateUser(id, updateUserDto);
+    if (!updatedUser) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return updatedUser;
+  }
+  // Delete user by ID (DELETE /users/:id)
+  @Delete(':id')
+  async deleteUser(@Param('id') id: number): Promise<void> {
+    const result = await this.userService.deleteUser(id);
+    if (!result) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+  }
 }

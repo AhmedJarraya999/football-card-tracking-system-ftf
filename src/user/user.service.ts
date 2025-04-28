@@ -23,4 +23,31 @@ export class UserService {
   }
 
   // Additional methods as needed (updateUser, deleteUser, etc.)
+
+  // Find a user by ID
+  async findById(id: number): Promise<User | null | undefined> {
+    return this.userRepository.findOne({ where: { id } });
+  }
+
+  // Find all users
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find();
+    // Update a user
+  }
+  async updateUser(
+    id: number,
+    updateUserDto: Partial<CreateUserDto>,
+  ): Promise<User | null> {
+    const user = await this.findById(id);
+    if (!user) {
+      return null;
+    }
+    Object.assign(user, updateUserDto);
+    return await this.userRepository.save(user);
+  }
+  // Delete a user by ID
+  async deleteUser(id: number): Promise<boolean> {
+    const result = await this.userRepository.delete(id);
+    return (result.affected ?? 0) > 0;
+  }
 }
