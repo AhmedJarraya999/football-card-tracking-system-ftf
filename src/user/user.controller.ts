@@ -22,7 +22,24 @@ export class UserController {
     return this.userService.createUser(createUserDto);
   }
 
-  // Get user by email (GET /users/:email)
+  // Register a new user (POST /users/register)
+  @Post('register')
+  async register(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return this.userService.register(createUserDto);
+  }
+
+  // Login a user (POST /users/login)
+  @Post('login')
+  async login(
+    @Body() loginCredentials: { email: string; password: string },
+  ): Promise<{ token: string }> {
+    const { email, password } = loginCredentials;
+    const result = await this.userService.login(email, password);
+    if (!result) {
+      throw new NotFoundException('Invalid login credentials');
+    }
+    return { token: result.accessToken };
+  }
   @Get(':email')
   async getUserByEmail(@Param('email') email: string): Promise<User> {
     const user = await this.userService.findByEmail(email);
@@ -62,9 +79,10 @@ export class UserController {
   // Delete user by ID (DELETE /users/:id)
   @Delete(':id')
   async deleteUser(@Param('id') id: number): Promise<void> {
-    const result = await this.userService.deleteUser(id);
-    if (!result) {
+    const user = await this.userService.findById(id);
+    if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
+    await this.userService.deleteUser(id);
   }
 }
