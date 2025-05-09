@@ -7,6 +7,7 @@ import { CardEventModule } from './card-event/card-event.module';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
+import { TeamModule } from './team/team.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { User } from './user/user.entity';
     PlayerModule,
     CardEventModule,
     UserModule,
+    TeamModule,
   ],
   controllers: [AppController],
   providers: [AppService],
