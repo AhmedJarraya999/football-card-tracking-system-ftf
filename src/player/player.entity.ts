@@ -1,9 +1,11 @@
+import { CardEvent } from 'src/card-event/card-event.entity';
 import { Team } from 'src/team/team.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -58,4 +60,6 @@ export class Player {
 
   @UpdateDateColumn()
   updatedAt: Date;
+  @OneToMany(() => CardEvent, (cardEvent) => cardEvent.player)
+  cardEvents: CardEvent[];
 }
