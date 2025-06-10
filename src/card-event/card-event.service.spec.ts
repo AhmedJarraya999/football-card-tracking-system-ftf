@@ -15,4 +15,8 @@ describe('CardEventService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  // Since CardEventService currently has no methods or properties,
+  // we can only test its instantiation.
+  // Add more tests here when methods are implemented.
 });
