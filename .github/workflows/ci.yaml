@@ -1,0 +1,56 @@
+name: CI Workflow
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      # Optional: if your e2e tests require a database or other services, you can define them here
+      # For example, a PostgreSQL service:
+      postgres:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm run test -- --runInBand
+
+      - name: Run e2e tests
+        env:
+          # Add any env variables needed for your e2e tests, for example database URLs
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/testdb
+        run: npm run test:e2e -- --runInBand
+
+      - name: Build the project
+        run: npm run build
