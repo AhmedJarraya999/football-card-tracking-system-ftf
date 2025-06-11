@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { TeamModule } from './team/team.module';
+import { SuspensionModule } from './suspension/suspension.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { TeamModule } from './team/team.module';
     CardEventModule,
     UserModule,
     TeamModule,
+    SuspensionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
