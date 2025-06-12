@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { CreateTeamDto } from './dto/create-team-dto';
 import { Team } from './team.entity';
@@ -31,5 +31,9 @@ export class TeamController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.teamService.findOne(id);
+  }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.teamService.deleteTeam(Number(id));
   }
 }
