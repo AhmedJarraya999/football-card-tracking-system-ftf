@@ -40,7 +40,7 @@ export class Player {
   })
   role: Role;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   position: string | null;
 
   @Column({ nullable: true })

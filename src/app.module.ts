@@ -9,6 +9,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { TeamModule } from './team/team.module';
 import { SuspensionModule } from './suspension/suspension.module';
+import { Match } from './match/match.entity';
+import { Player } from './player/player.entity';
+import { CardEvent } from './card-event/card-event.entity';
+import { Team } from './team/team.entity';
+import { Suspension } from './suspension/suspension.entity';
 
 @Module({
   imports: [
@@ -19,7 +24,7 @@ import { SuspensionModule } from './suspension/suspension.module';
       username: 'postgres',
       password: '24149100',
       database: 'football_tracker',
-      entities: [User],
+      entities: [User, Match, Player, CardEvent, Team, Suspension],
       synchronize: true,
     }),
     MatchModule,
